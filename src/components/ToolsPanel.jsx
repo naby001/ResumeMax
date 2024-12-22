@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Divider, Typography, Select, MenuItem, IconButton, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
+import { Box, Button, Divider, Typography, Select, MenuItem, IconButton, List, ListItem, ListItemIcon } from '@mui/material';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import ImageIcon from '@mui/icons-material/Image';
 import CropIcon from '@mui/icons-material/Crop';
@@ -15,43 +15,76 @@ const ToolsPanel = () => {
     <Box
       display="flex"
       bgcolor="white"
-  
       width={600}
       height="100vh"
       borderRadius={3}
-      boxShadow={3}
+      boxShadow={6}
     >
       {/* Left Column - Main options */}
       <Box
-        width={60}
-        bgcolor="white"
+        width={100}
+        bgcolor="primary.main"
         paddingTop={2}
         paddingRight={2}
-        borderRadius={2}
-       
+        paddingLeft={2}
+      
         display="flex"
         flexDirection="column"
-        gap={2}
+        gap={3}
+        alignItems="center"
+        boxShadow={3}
       >
-        
         <List>
-          <ListItem button onClick={() => setActiveTab('text')} style={{marginBottom:50, borderRadius:20, alignItems:'center'}} >
+          <ListItem
+            button
+            onClick={() => setActiveTab('text')}
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: activeTab === 'text' ? 'secondary.main' : 'transparent',
+              padding: 1,
+              '&:hover': {
+                backgroundColor: 'secondary.main',
+               
+              },
+            }}
+          >
             <ListItemIcon>
-              <TextFieldsIcon color="primary" />
+              <TextFieldsIcon color="inherit" />
             </ListItemIcon>
-           
           </ListItem>
-          <ListItem button onClick={() => setActiveTab('image')} style={{marginBottom:50}}>
+          <ListItem
+            button
+            onClick={() => setActiveTab('image')}
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: activeTab === 'image' ? 'secondary.main' : 'transparent',
+              padding: 1,
+              '&:hover': {
+                backgroundColor: 'secondary.main',
+              },
+              
+            }
+          }
+          >
             <ListItemIcon>
-              <ImageIcon color="primary" />
+              <ImageIcon color="inherit" />
             </ListItemIcon>
-            
           </ListItem>
-          <ListItem button onClick={() => setActiveTab('shapes')} style={{marginBottom:50}}>
+          <ListItem
+            button
+            onClick={() => setActiveTab('shapes')}
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: activeTab === 'shapes' ? 'secondary.main' : 'transparent',
+              padding: 1,
+              '&:hover': {
+                backgroundColor: 'secondary.main',
+              },
+            }}
+          >
             <ListItemIcon>
-              <CropIcon color="primary" />
+              <CropIcon color="inherit" />
             </ListItemIcon>
-            
           </ListItem>
         </List>
       </Box>
@@ -59,20 +92,22 @@ const ToolsPanel = () => {
       {/* Right Column - Sub-options */}
       <Box
         flexGrow={1}
-        p={2}
+        p={3}
         bgcolor="white"
         borderRadius={2}
         boxShadow={3}
-        
         display="flex"
         flexDirection="column"
         gap={3}
       >
         {activeTab === 'text' && (
           <Box>
-            <Typography variant="h6" fontWeight="bold">Text</Typography>
-            <Button variant="outlined" fullWidth sx={{ mb: 2 }}>Add Text Box</Button>
-            <Button variant="outlined" fullWidth sx={{ mb: 2 }}>Add Shape</Button>
+            <Typography variant="h6" fontWeight="bold" color="primary.main">Text</Typography>
+            <Button variant="contained" fullWidth sx={{ mb: 2, backgroundColor: 'primary.main', '&:hover': { backgroundColor: 'primary.dark' } }}>
+              Add Text Box
+            </Button>
+            <Button variant="contained" fullWidth sx={{ mb: 2, backgroundColor: 'primary.main', '&:hover': { backgroundColor: 'primary.dark' } }}>
+              Add Shape</Button>
             
             <Select defaultValue="Arial" fullWidth sx={{ mb: 2 }}>
               <MenuItem value="Arial">Arial</MenuItem>
@@ -94,8 +129,8 @@ const ToolsPanel = () => {
 
         {activeTab === 'image' && (
           <Box>
-            <Typography variant="h6" fontWeight="bold" gutterBottom>Uploads</Typography>
-            <Button variant="outlined" fullWidth component="label">
+            <Typography variant="h6" fontWeight="bold" gutterBottom color="primary.main">Uploads</Typography>
+            <Button variant="contained" fullWidth component="label" sx={{ mb: 2 }}>
               Choose Image
               <input type="file" hidden />
             </Button>
@@ -121,18 +156,18 @@ const ToolsPanel = () => {
 
         {activeTab === 'shapes' && (
           <Box>
-            <Typography variant="h6" fontWeight="bold">Shapes & Icons</Typography>
-            <Box display="flex" gap={2} flexWrap="wrap">
-              <IconButton>
+            <Typography variant="h6" fontWeight="bold" color="primary.main">Shapes & Icons</Typography>
+            <Box display="flex" gap={3} flexWrap="wrap"> {/* Increased gap between icons */}
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
                 <InsertEmoticonIcon />
               </IconButton>
-              <IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
                 <GitHubIcon />
               </IconButton>
-              <IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
                 <PhoneIcon />
               </IconButton>
-              <IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
                 <EmailIcon />
               </IconButton>
             </Box>
