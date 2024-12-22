@@ -151,6 +151,7 @@ const ToolsPanel = () => {
             >
               Add Text Box
             </Button>
+            
             <Select defaultValue="Arial" fullWidth sx={{ mb: 2 }}>
               <MenuItem value="Arial">Arial</MenuItem>
               <MenuItem value="Times New Roman">Times New Roman</MenuItem>
@@ -217,6 +218,34 @@ const ToolsPanel = () => {
               <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
                 <InsertEmoticonIcon />
               </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                <GitHubIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                <PhoneIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                <EmailIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                <FacebookIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                <InstagramIcon/>
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                < WhatsAppIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                < LinkedInIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                < TwitterIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                <YouTubeIcon />
+              </IconButton>
+
               {/* Additional icons here */}
             </Box>
             <Box mt={2}>
