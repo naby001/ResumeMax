@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Divider, Typography, Select, MenuItem, IconButton, List, ListItem, ListItemIcon } from '@mui/material';
+import { Box, Button, Typography, Select, MenuItem, IconButton, List, ListItem, ListItemIcon } from '@mui/material';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import ImageIcon from '@mui/icons-material/Image';
 import CropIcon from '@mui/icons-material/Crop';
@@ -7,9 +7,26 @@ import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import TwitterIcon from '@mui/icons-material/Twitter';
+
 
 const ToolsPanel = () => {
   const [activeTab, setActiveTab] = useState('text'); // Tracks which tab is active
+  const [imagePreview, setImagePreview] = useState(null); // Tracks the uploaded image preview
+
+  // Handles image upload and sets the preview
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
+    }
+  };
 
   return (
     <Box
@@ -27,7 +44,6 @@ const ToolsPanel = () => {
         paddingTop={2}
         paddingRight={2}
         paddingLeft={2}
-      
         display="flex"
         flexDirection="column"
         gap={3}
@@ -44,7 +60,6 @@ const ToolsPanel = () => {
               padding: 1,
               '&:hover': {
                 backgroundColor: 'secondary.main',
-               
               },
             }}
           >
@@ -62,9 +77,7 @@ const ToolsPanel = () => {
               '&:hover': {
                 backgroundColor: 'secondary.main',
               },
-              
-            }
-          }
+            }}
           >
             <ListItemIcon>
               <ImageIcon color="inherit" />
@@ -106,9 +119,6 @@ const ToolsPanel = () => {
             <Button variant="contained" fullWidth sx={{ mb: 2, backgroundColor: 'primary.main', '&:hover': { backgroundColor: 'primary.dark' } }}>
               Add Text Box
             </Button>
-            <Button variant="contained" fullWidth sx={{ mb: 2, backgroundColor: 'primary.main', '&:hover': { backgroundColor: 'primary.dark' } }}>
-              Add Shape</Button>
-            
             <Select defaultValue="Arial" fullWidth sx={{ mb: 2 }}>
               <MenuItem value="Arial">Arial</MenuItem>
               <MenuItem value="Times New Roman">Times New Roman</MenuItem>
@@ -132,7 +142,7 @@ const ToolsPanel = () => {
             <Typography variant="h6" fontWeight="bold" gutterBottom color="primary.main">Uploads</Typography>
             <Button variant="contained" fullWidth component="label" sx={{ mb: 2 }}>
               Choose Image
-              <input type="file" hidden />
+              <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
             </Button>
             <Box mt={2}>
               <Typography variant="body2" fontWeight="bold">Uploaded Image:</Typography>
@@ -145,19 +155,32 @@ const ToolsPanel = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  mt: 1
+                  mt: 1,
+                  overflow: 'hidden',
                 }}
               >
-                <Typography variant="body2">Image preview</Typography>
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                    }}
+                  />
+                ) : (
+                  <Typography variant="body2">No image selected</Typography>
+                )}
               </Box>
             </Box>
           </Box>
         )}
 
-        {activeTab === 'shapes' && (
+{activeTab === 'shapes' && (
           <Box>
             <Typography variant="h6" fontWeight="bold" color="primary.main">Shapes & Icons</Typography>
-            <Box display="flex" gap={3} flexWrap="wrap"> {/* Increased gap between icons */}
+            <Box display="flex" gap={3} flexWrap="wrap">
               <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
                 <InsertEmoticonIcon />
               </IconButton>
@@ -170,6 +193,24 @@ const ToolsPanel = () => {
               <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
                 <EmailIcon />
               </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                <FacebookIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                <InstagramIcon/>
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                < WhatsAppIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                < LinkedInIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                < TwitterIcon />
+              </IconButton>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+                <YouTubeIcon />
+              </IconButton>
             </Box>
             <Box mt={2}>
               <Button variant="outlined" fullWidth sx={{ mb: 2 }}>Add Shape</Button>
@@ -177,6 +218,7 @@ const ToolsPanel = () => {
             </Box>
           </Box>
         )}
+
       </Box>
     </Box>
   );
