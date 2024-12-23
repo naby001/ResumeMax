@@ -10,6 +10,7 @@ const Builder = () => {
   const [zoom, setZoom] = useState(100);
   const [pages, setPages] = useState([1]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [textBoxes, setTextBoxes] = useState([]); // Manage text boxes
 
   const handleZoom = (value) => {
     setZoom(value);
@@ -23,10 +24,17 @@ const Builder = () => {
     setCurrentPage(newPage);
   };
 
+  const addTextBox = () => {
+    setTextBoxes((prev) => [
+      ...prev,
+      { x: 50, y: 50, text: 'New Text', page: currentPage },
+    ]);
+  };
+
   return (
     <Box display="flex" height="100vh">
       {/* Tools Panel */}
-      <ToolsPanel />
+      <ToolsPanel addTextBox={addTextBox}/>
 
       {/* Main Canvas Area */}
       <Box
@@ -51,7 +59,12 @@ const Builder = () => {
 
         {/* Display Current Page */}
         <Box display="flex" mb={2} maxWidth="100%" overflow="auto">
-          <CanvasArea key={currentPage} zoom={zoom} pageNumber={currentPage} />
+          <CanvasArea 
+          key={currentPage} 
+          zoom={zoom} 
+          pageNumber={currentPage} 
+          textBoxes={textBoxes.filter((box) => box.page === currentPage)} // Filter by page
+          setTextBoxes={setTextBoxes}/>
         </Box>
 
         {/* Add Page Button */}

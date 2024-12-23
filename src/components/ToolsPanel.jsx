@@ -31,8 +31,9 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import TextBoxIcon from '../assets/images/text-box.png';
 
-const ToolsPanel = () => {
+const ToolsPanel = ({addTextBox}) => {
   const [activeTab, setActiveTab] = useState('text');
   const [imagePreview, setImagePreview] = useState(null);
   const [tableModalOpen, setTableModalOpen] = useState(false);
@@ -69,88 +70,183 @@ const ToolsPanel = () => {
     <Box
       display="flex"
       bgcolor="white"
-      width={600}
+      //width={600}
       height="100vh"
       borderRadius={3}
       boxShadow={6}
     >
       {/* Left Column */}
       <Box
-        width={100}
-        bgcolor="primary.main"
+        width={80}
+       // bgcolor="primary.main"
         paddingTop={2}
-        paddingRight={2}
-        paddingLeft={2}
+        paddingRight={1}
+        paddingLeft={1}
         display="flex"
         flexDirection="column"
         gap={3}
         alignItems="center"
         boxShadow={3}
+        sx={{
+          bgcolor: 'rgba(255, 255, 255, 0.1)', // Semi-transparent white background
+          backdropFilter: 'blur(10px)', // Blur effect
+          borderRadius: 2, // Rounded corners
+          border: '1px solid rgba(255, 255, 255, 0.2)', // Subtle border for glass effect
+          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)', // Shadow for depth
+        }}
       >
         <List>
-          <ListItem
-            button
-            onClick={() => setActiveTab('text')}
-            sx={{
-              borderRadius: '50%',
-              backgroundColor: activeTab === 'text' ? 'secondary.main' : 'transparent',
-              padding: 1,
-              '&:hover': { backgroundColor: 'secondary.main' },
-            }}
-          >
+        <ListItem
+  onClick={() => setActiveTab('text')}
+  sx={{
+    borderRadius: 4,
+    backgroundColor: activeTab === 'text' ? '#1b1b2f' : 'transparent', // Dark navy blue when active
+    height: 50,
+    width: 50,
+    marginBottom: 5,
+    alignItems: 'center',
+    color: activeTab === 'text' ? '#ffffff' : '#cfcfcf', // White text when active, light gray otherwise
+    boxShadow: activeTab === 'text'
+      ? '0px 6px 10px rgba(0, 0, 0, 0.8), inset 0px 2px 4px rgba(255, 255, 255, 0.2)' // Stronger shadow when active
+      : '0px 3px 6px rgba(0, 0, 0, 0.4)',
+    transition: 'background-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s',
+    '&:hover': {
+      backgroundColor: '#1f4068', // Brighter navy blue on hover
+      color: '#ffffff', // White text on hover
+      boxShadow: '0px 8px 12px rgba(0, 0, 0, 0.9), 0px -4px 8px rgba(255, 255, 255, 0.2)', // Elevated shadow
+      transform: 'translateY(-2px)', // Slight lift on hover
+    },
+    '&:active': {
+      backgroundColor: '#000000', // Turns black on click
+      color: '#ffffff', // Ensures text stays white
+      boxShadow: 'inset 0px 4px 6px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.6)', // Inset shadow for pressed effect
+      transform: 'translateY(1px)', // Slight sink on click
+    },
+  }}
+>
+
+
             <ListItemIcon>
-              <TextFieldsIcon color="inherit" />
+              <TextFieldsIcon sx={{ 
+    color: activeTab === 'text' ? '#ffffff' : '#cfcfcf' 
+  }} />
             </ListItemIcon>
           </ListItem>
           <ListItem
-            button
-            onClick={() => setActiveTab('image')}
-            sx={{
-              borderRadius: '50%',
-              backgroundColor: activeTab === 'image' ? 'secondary.main' : 'transparent',
-              padding: 1,
-              '&:hover': { backgroundColor: 'secondary.main' },
-            }}
-          >
+  onClick={() => setActiveTab('image')}
+  sx={{
+    borderRadius: 4,
+    backgroundColor: activeTab === 'image' ? '#1b1b2f' : 'transparent', // Dark navy blue when active
+    height: 50,
+    width: 50,
+    marginBottom: 5,
+    alignItems: 'center',
+    boxShadow: activeTab === 'image'
+      ? '0px 6px 10px rgba(0, 0, 0, 0.8), inset 0px 2px 4px rgba(255, 255, 255, 0.2)' // Stronger shadow when active
+      : '0px 3px 6px rgba(0, 0, 0, 0.4)',
+    transition: 'background-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s',
+    '&:hover': {
+      backgroundColor: '#1f4068', // Brighter navy blue on hover
+      color: '#ffffff', // White text on hover
+      boxShadow: '0px 8px 12px rgba(0, 0, 0, 0.9), 0px -4px 8px rgba(255, 255, 255, 0.2)', // Elevated shadow
+      transform: 'translateY(-2px)', // Slight lift on hover
+    },
+    '&:active': {
+      backgroundColor: '#000000', // Turns black on click
+      color: '#ffffff', // Ensures text stays white
+      boxShadow: 'inset 0px 4px 6px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.6)', // Inset shadow for pressed effect
+      transform: 'translateY(1px)', // Slight sink on click
+    },
+  }}
+>
             <ListItemIcon>
-              <ImageIcon color="inherit" />
+              <ImageIcon  sx={{ 
+    color: activeTab === 'image' ? '#ffffff' : '#cfcfcf' 
+  }}  />
             </ListItemIcon>
           </ListItem>
           <ListItem
-            button
-            onClick={() => setActiveTab('shapes')}
-            sx={{
-              borderRadius: '50%',
-              backgroundColor: activeTab === 'shapes' ? 'secondary.main' : 'transparent',
-              padding: 1,
-              '&:hover': { backgroundColor: 'secondary.main' },
-            }}
-          >
+  onClick={() => setActiveTab('shapes')}
+  sx={{
+    borderRadius: 4,
+    backgroundColor: activeTab === 'shapes' ? '#1b1b2f' : 'transparent', // Dark navy blue when active
+    height: 50,
+    width: 50,
+    marginBottom: 5,
+    alignItems: 'center',
+    boxShadow: activeTab === 'shapes'
+    ? '0px 6px 10px rgba(0, 0, 0, 0.8), inset 0px 2px 4px rgba(255, 255, 255, 0.2)' // Stronger shadow when active
+    : '0px 3px 6px rgba(0, 0, 0, 0.4)',
+  transition: 'background-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s',
+  '&:hover': {
+    backgroundColor: '#1f4068', // Brighter navy blue on hover
+    color: '#ffffff', // White text on hover
+    boxShadow: '0px 8px 12px rgba(0, 0, 0, 0.9), 0px -4px 8px rgba(255, 255, 255, 0.2)', // Elevated shadow
+    transform: 'translateY(-2px)', // Slight lift on hover
+  },
+  '&:active': {
+    backgroundColor: '#000000', // Turns black on click
+    color: '#ffffff', // Ensures text stays white
+    boxShadow: 'inset 0px 4px 6px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.6)', // Inset shadow for pressed effect
+    transform: 'translateY(1px)', // Slight sink on click
+  },
+  }}
+>
             <ListItemIcon>
-              <CropIcon color="inherit" />
+              <CropIcon  sx={{ 
+    color: activeTab === 'shapes' ? '#ffffff' : '#cfcfcf' 
+  }}  />
             </ListItemIcon>
           </ListItem>
         </List>
       </Box>
 
       {/* Right Column */}
-      <Box flexGrow={1} p={3} bgcolor="white" borderRadius={2} boxShadow={3}>
+      <Box width={260} p={3} bgcolor="white" borderRadius={2} boxShadow={3}>
         {activeTab === 'text' && (
           <Box>
-            <Typography variant="h6" fontWeight="bold" color="primary.main">
-              Text
-            </Typography>
-            <Button
-              variant="contained"
-              fullWidth
-              sx={{
-                mb: 2,
-                backgroundColor: 'primary.main',
-                '&:hover': { backgroundColor: 'primary.dark' },
-              }}
-            >
-              Add Text Box
-            </Button>
+           <Button
+  variant="contained"
+  onClick={addTextBox}
+  fullWidth
+  sx={{
+    mb: 2,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#000000', // Sleek black background
+    color: '#ffffff', // White text
+    fontSize: '16px',
+    fontWeight: 'bold',
+    textTransform: 'none', // Prevents all-uppercase text
+    borderRadius: 3, // Smooth rounded edges
+   
+    padding: '10px 20px',
+    '&:hover': {
+      backgroundColor: '#1a1a1a', // Slightly lighter black on hover
+    
+    },
+    '&:active': {
+      backgroundColor: '#333333', // Darker gray on click
+    
+    },
+    
+  }}
+  startIcon={
+    <img
+      src={TextBoxIcon}
+      alt="Text Box Icon"
+      style={{
+        height: '20px',
+        width: '20px',
+        filter: 'brightness(0) invert(1)', // Ensures icon is white for a black background
+        marginRight: '8px',
+      }}
+    />
+  }
+>
+  Add Text Box
+</Button>
             
             <Select defaultValue="Arial" fullWidth sx={{ mb: 2 }}>
               <MenuItem value="Arial">Arial</MenuItem>
