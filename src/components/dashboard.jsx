@@ -101,7 +101,7 @@ const DashboardPage = () => {
         {[ 
           { text: 'Dashboard', icon: <Dashboard /> },
           { text: 'My Documents', icon: <Description /> },
-          { text: 'Account ', icon: <AccountTree /> },
+          { text: 'Personal Info', icon: <AccountTree /> },
           { text: 'Templates', icon: <Work /> },
         ].map((item) => (
           <ListItem key={item.text} disablePadding>
