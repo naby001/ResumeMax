@@ -100,6 +100,7 @@ function LoginPage() {
             bgcolor: '#000000', // Black card
             color: '#ffffff', // White text
             border: '1px solid rgba(255, 255, 255, 0.2)', // Subtle border
+            borderRadius:'20px'
           }}
         >
           <CardContent sx={{ p: 4 }}>
@@ -124,7 +125,7 @@ function LoginPage() {
                 component="h1"
                 sx={{ mb: 1, fontWeight: 'bold', color: '#ffffff' }}
               >
-                ResumeC
+                ResumeKraft
               </Typography>
               <Typography
                 variant="h5"
@@ -209,6 +210,7 @@ function LoginPage() {
                   '&:hover': {
                     bgcolor: 'rgba(255, 255, 255, 0.9)',
                   },
+                  borderRadius:'20px'
                 }}
               >
                 {isLoading ? (

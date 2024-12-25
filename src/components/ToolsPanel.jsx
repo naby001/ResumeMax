@@ -248,21 +248,7 @@ const ToolsPanel = ({addTextBox}) => {
   Add Text Box
 </Button>
             
-            <Select defaultValue="Arial" fullWidth sx={{ mb: 2 }}>
-              <MenuItem value="Arial">Arial</MenuItem>
-              <MenuItem value="Times New Roman">Times New Roman</MenuItem>
-              <MenuItem value="Roboto">Roboto</MenuItem>
-            </Select>
-            <Select defaultValue={16} fullWidth sx={{ mb: 2 }}>
-              <MenuItem value={12}>12</MenuItem>
-              <MenuItem value={16}>16</MenuItem>
-              <MenuItem value={20}>20</MenuItem>
-            </Select>
-            <Select defaultValue="black" fullWidth>
-              <MenuItem value="black">Black</MenuItem>
-              <MenuItem value="blue">Blue</MenuItem>
-              <MenuItem value="red">Red</MenuItem>
-            </Select>
+            
           </Box>
         )}
 

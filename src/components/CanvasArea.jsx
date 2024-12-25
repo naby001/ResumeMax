@@ -53,6 +53,7 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
       ...prev,
       fontSize: Math.max(prev.fontSize + change, 8),
     }));
+    console.log(styles);
   };
 
 
@@ -131,8 +132,15 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
         borderColor: '#0077B6', // Deep ocean blue on focus
         borderWidth: '2px',
       },
+      "& textarea": {
+        fontSize: `${styles.fontSize}px`, // Apply the fontSize to the textarea
+        fontWeight: styles.fontWeight,
+        fontStyle: styles.fontStyle,
+        textDecoration: styles.textDecoration,
+        textAlign: styles.textAlign,
+      },
     },
-    ...textBox.styles,
+    ...styles,
   }}
 />
 
@@ -204,6 +212,51 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
                 <RemoveIcon />
               </IconButton>
             </Tooltip>
+            {/* Font Selector */}
+  <Tooltip title="Change Font">
+    <Box>
+      <select
+        value={styles.fontFamily || "Default"}
+        onChange={(e) =>
+          setStyles((prev) => ({ ...prev, fontFamily: e.target.value }))
+        }
+        style={{
+          padding: "5px",
+          borderRadius: "8px",
+          border: "1px solid #ccc",
+          fontSize: "14px",
+        }}
+      >
+        <option value="Arial">Arial</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Tahoma">Tahoma</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Roboto">Roboto</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+      </select>
+    </Box>
+  </Tooltip>
+
+  {/* Text Color */}
+  <Tooltip title="Text Color">
+    <input
+      type="color"
+      value={styles.color || "#000000"}
+      onChange={(e) =>
+        setStyles((prev) => ({ ...prev, color: e.target.value }))
+      }
+      style={{
+        height: "32px",
+        width: "32px",
+        borderRadius: "50%",
+        border: "none",
+        cursor: "pointer",
+        boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+      }}
+    />
+  </Tooltip>
           </Box>
         )}
     </Box>
