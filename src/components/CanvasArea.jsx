@@ -9,15 +9,19 @@ import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
+import * as Resizable from 'react-resizable';
+const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShapes }) => {
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [menuPosition, setMenuPosition] = useState(null);
+  const [focusedShapeIndex, setFocusedShapeIndex] = useState(null);
+
   const [styles, setStyles] = useState({
     fontWeight: "normal",
     fontStyle: "normal",
     textDecoration: "none",
     textAlign: "left",
     fontSize: 14,
+    fontFamily:'default'
   });
   const zoomStyle = {
     transform: `scale(${zoom / 100})`,
@@ -37,6 +41,14 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
     setTextBoxes(updatedTextBoxes);
   };
 
+  const handleDragShapes = (index, data) => {
+    const updatedShapes = [...shapes];
+    //console.log(index);
+    updatedShapes[0].x = data.x;
+    updatedShapes[0].y = data.y;
+    setShapes(updatedShapes);
+  };
+
   const handleDeleteTextBox = () => {
     if (focusedIndex !== null) {
       setTextBoxes((prev) => prev.filter((_, index) => index !== focusedIndex));
@@ -44,16 +56,29 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
     }
   };
 
+  const handleDeleteShape = () => {
+    if (focusedShapeIndex !== null) {
+      setShapes((prev) => prev.filter((_, index) => index !== focusedShapeIndex));
+      setFocusedShapeIndex(null);
+    }
+  };
   const toggleStyle = (key, value) => {
-    setStyles((prev) => ({ ...prev, [key]: prev[key] === value ? "normal" : value }));
+    const updatedTextBoxes = [...textBoxes];
+    //console.log(updatedTextBoxes[focusedIndex].key)
+    if(updatedTextBoxes[focusedIndex][key]===value)
+      updatedTextBoxes[focusedIndex][key]="normal"
+    else
+    updatedTextBoxes[focusedIndex][key]=value;
+    setTextBoxes(updatedTextBoxes);
+    console.log(textBoxes)
+    //setTextBoxes((prev) => ({ ...prev, [key]: prev[key] === value ? "normal" : value }));
   };
 
   const changeFontSize = (change) => {
-    setStyles((prev) => ({
-      ...prev,
-      fontSize: Math.max(prev.fontSize + change, 8),
-    }));
-    console.log(styles);
+    const updatedTextBoxes=[...textBoxes];
+    updatedTextBoxes[focusedIndex].fontSize= Math.max(updatedTextBoxes[focusedIndex].fontSize + change, 8);
+    setTextBoxes(updatedTextBoxes);
+    //console.log(styles);
   };
 
 
@@ -74,11 +99,15 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
       if (event.key === 'Delete' && focusedIndex !== null) {
         handleDeleteTextBox();
       }
+      if (event.key === 'Delete' && focusedShapeIndex !== null) {
+        handleDeleteShape();
+      }
+    
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [focusedIndex]);
+  }, [focusedIndex, focusedShapeIndex]);
 
   return (
     <Box
@@ -90,18 +119,17 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
       mb={2}
       sx={zoomStyle}
     >
-      <Box position="absolute" top={10} left={10} fontSize={12} color="grey.500">
-        Page {pageNumber}
-      </Box>
-
-      {/* Render Draggable Text Boxes */}
+       {shapes?.map((shape, index) => (
+          <ShapeRenderer key={index} index={index} shape={shape} updateShape={handleDragShapes} setFocusedShapeIndex={setFocusedShapeIndex}/>
+        ))}
+    {/* Render Draggable Text Boxes */}
       {textBoxes?.map((textBox, index) => (
         <Draggable
           key={index}
           defaultPosition={{ x: textBox.x, y: textBox.y }}
           onStop={(e, data) => handleDrag(index, data)}
         >
-
+           
           <Box
             sx={{
               position: 'absolute',
@@ -110,6 +138,7 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
               //border: '1px dashed grey',
               borderRadius: '4px',
               cursor: 'move',
+              
             }}
           >
            <TextField
@@ -119,8 +148,7 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
   value={textBox.text}
   onChange={(e) => handleTextChange(index, e.target.value)}
   multiline
-  
-  sx={{
+ sx={{
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
         borderColor: 'transparent', // No border by default
@@ -133,14 +161,16 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
         borderWidth: '2px',
       },
       "& textarea": {
-        fontSize: `${styles.fontSize}px`, // Apply the fontSize to the textarea
-        fontWeight: styles.fontWeight,
-        fontStyle: styles.fontStyle,
-        textDecoration: styles.textDecoration,
-        textAlign: styles.textAlign,
+        fontSize: `${textBox.fontSize}px`, // Apply the fontSize to the textarea
+        fontWeight: textBox.fontWeight,
+        fontStyle: textBox.fontStyle,
+        textDecoration: textBox.textDecoration,
+        textAlign: textBox.textAlign,
+        fontFamily:textBox.font,
+        
       },
     },
-    ...styles,
+    //...styles,
   }}
 />
 
@@ -183,21 +213,33 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
             </Tooltip>
             <Tooltip title="Align Left">
               <IconButton
-                onClick={() => setStyles((prev) => ({ ...prev, textAlign: "left" }))}
+                onClick={() => {
+                  const updatedTextBoxes=[...textBoxes];
+                  updatedTextBoxes[focusedIndex].textAlign="left";
+                  setTextBoxes(updatedTextBoxes);
+                }}
               >
                 <FormatAlignLeftIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Align Center">
               <IconButton
-                onClick={() => setStyles((prev) => ({ ...prev, textAlign: "center" }))}
+                onClick={() => {
+                  const updatedTextBoxes=[...textBoxes];
+                  updatedTextBoxes[focusedIndex].textAlign="center";
+                  setTextBoxes(updatedTextBoxes);
+                }}
               >
                 <FormatAlignCenterIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Align Right">
               <IconButton
-                onClick={() => setStyles((prev) => ({ ...prev, textAlign: "right" }))}
+                onClick={() => {
+                  const updatedTextBoxes=[...textBoxes];
+                  updatedTextBoxes[focusedIndex].textAlign="right";
+                  setTextBoxes(updatedTextBoxes);
+                }}
               >
                 <FormatAlignRightIcon />
               </IconButton>
@@ -216,9 +258,14 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
   <Tooltip title="Change Font">
     <Box>
       <select
-        value={styles.fontFamily || "Default"}
+        value={textBoxes[focusedIndex].font || "Default"}
         onChange={(e) =>
-          setStyles((prev) => ({ ...prev, fontFamily: e.target.value }))
+         {// setTextBoxes((prev) => ({ ...prev, font: e.target.value }));
+         const updatedTextBoxes = [...textBoxes];
+         updatedTextBoxes[focusedIndex].font=e.target.value;
+         setTextBoxes(updatedTextBoxes);
+        //console.log(styles);
+         }
         }
         style={{
           padding: "5px",
@@ -260,6 +307,41 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes }) => {
           </Box>
         )}
     </Box>
+  );
+};
+
+const ShapeRenderer = ({ shape, updateShape,index,setFocusedShapeIndex }) => {
+  const isCircle = shape.type === "circle";
+  const isLine = shape.type === "line";
+  
+  const handleFocusShape = () => {
+    setFocusedShapeIndex(index);
+  };
+
+  return (
+    <Draggable
+     defaultPosition={{ x: shape.x, y: shape.y }}
+     onStart={handleFocusShape}
+      onStop={(e, data) =>
+        {console.log('drag stopped');updateShape(index, { x: data.x, y: data.y })}
+      }
+   
+    >
+      <div
+        style={{
+          position: "absolute",
+          border: isLine ? "none" : `2px solid ${shape.color}`,
+          
+          backgroundColor: isCircle ? "transparent" : "transparent",
+          borderRadius: isCircle ? "50%" : "0",
+          width: isLine ? shape.width : shape.width,
+          height: isLine ? "2px" : shape.height,
+        }}
+        onClick={handleFocusShape}
+      >
+       
+      </div>
+    </Draggable>
   );
 };
 

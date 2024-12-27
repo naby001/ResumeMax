@@ -17,6 +17,7 @@ import {
   TableCell,
   TableRow,
   TableHead,
+  Tooltip
 } from '@mui/material';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import ImageIcon from '@mui/icons-material/Image';
@@ -32,8 +33,10 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import TextBoxIcon from '../assets/images/text-box.png';
-
-const ToolsPanel = ({addTextBox}) => {
+import CircleIcon from '@mui/icons-material/Circle';
+import SquareIcon from '@mui/icons-material/CheckBoxOutlineBlank'; // For rectangle (square-like icon)
+import RemoveIcon from '@mui/icons-material/Remove'; // For line
+const ToolsPanel = ({addTextBox, addShape}) => {
   const [activeTab, setActiveTab] = useState('text');
   const [imagePreview, setImagePreview] = useState(null);
   const [tableModalOpen, setTableModalOpen] = useState(false);
@@ -331,9 +334,59 @@ const ToolsPanel = ({addTextBox}) => {
               {/* Additional icons here */}
             </Box>
             <Box mt={2}>
-              <Button variant="outlined" fullWidth sx={{ mb: 2 }}>
-                Add Shape
-              </Button>
+              <Typography sx={{mt:2, fontWeight:'bold'}}>Shapes</Typography>
+            <Box sx={{ display: 'flex', gap: 2, mt: 2, mb:2 }} flexWrap="wrap">
+            <Tooltip title="Add Circle">
+    <IconButton
+      onClick={() => addShape('circle')}
+      sx={{
+        backgroundColor: 'lightgrey',
+        color: 'grey',
+        '&:hover': {
+          backgroundColor: '#BBDEFB',
+        },
+        fontSize: '20px',
+        padding: '6px',
+      }}
+    >
+      <CircleIcon fontSize="small" />
+    </IconButton>
+  </Tooltip>
+
+  <Tooltip title="Add Rectangle">
+    <IconButton
+      onClick={() => addShape('rectangle')}
+      sx={{
+        backgroundColor: 'lightgrey',
+        color: 'grey',
+        '&:hover': {
+          backgroundColor: '#C8E6C9',
+        },
+        fontSize: '20px',
+        padding: '6px',
+      }}
+    >
+      <SquareIcon fontSize="small" />
+    </IconButton>
+  </Tooltip>
+
+  <Tooltip title="Add Line">
+    <IconButton
+      onClick={() => addShape('line')}
+      sx={{
+        backgroundColor: 'lightgrey',
+        color: 'grey',
+        '&:hover': {
+          backgroundColor: '#FFCCBC',
+        },
+        fontSize: '20px',
+        padding: '6px',
+      }}
+    >
+      <RemoveIcon fontSize="small" />
+    </IconButton>
+  </Tooltip>
+  </Box>
               <Button variant="outlined" fullWidth sx={{ mb: 2 }}>
                 Add Icon
               </Button>

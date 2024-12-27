@@ -11,7 +11,21 @@ const Builder = () => {
   const [pages, setPages] = useState([1]);
   const [currentPage, setCurrentPage] = useState(1);
   const [textBoxes, setTextBoxes] = useState([]); // Manage text boxes
+  const [shapes, setShapes] = React.useState([]);
 
+  const addShape = (type) => {
+    const newShape = {
+      id: Date.now(),
+      type,
+      x: 100,
+      y: 100,
+      width: 100,
+      height: 100,
+      color: "black",
+    };
+    setShapes((prevShapes) => [...prevShapes, newShape]);
+   // console.log(shapes);
+  };
   const handleZoom = (value) => {
     setZoom(value);
   };
@@ -27,14 +41,18 @@ const Builder = () => {
   const addTextBox = () => {
     setTextBoxes((prev) => [
       ...prev,
-      { x: 50, y: 50, text: 'New Text', page: currentPage },
+      { x: 50, y: 50, text: 'New Text', page: currentPage, font:'Times New Roman', color:'black', style:'bold', fontSize:14, fontWeight:"normal"
+        ,fontStyle: "normal",
+        textDecoration: "none",
+        textAlign: "left",
+      },
     ]);
   };
 
   return (
     <Box display="flex" height="100vh">
       {/* Tools Panel */}
-      <ToolsPanel addTextBox={addTextBox}/>
+      <ToolsPanel addTextBox={addTextBox} addShape={addShape}/>
 
       {/* Main Canvas Area */}
       <Box
@@ -64,7 +82,9 @@ const Builder = () => {
           zoom={zoom} 
           pageNumber={currentPage} 
           textBoxes={textBoxes.filter((box) => box.page === currentPage)} // Filter by page
-          setTextBoxes={setTextBoxes}/>
+          setTextBoxes={setTextBoxes}
+          shapes={shapes}
+          setShapes={setShapes}/>
         </Box>
 
         {/* Add Page Button */}

@@ -13,8 +13,9 @@ import {
 } from '@mui/material';
 import { WorkOutline } from '@mui/icons-material';
 
-function LoginPage() {
+function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(true); // State to toggle between Login and Sign Up
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,6 +23,10 @@ function LoginPage() {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
     setIsLoading(false);
+  };
+
+  const toggleAuthPage = () => {
+    setIsLogin(!isLogin); // Toggle between Login and Sign Up
   };
 
   return (
@@ -37,63 +42,60 @@ function LoginPage() {
         overflow: 'hidden',
       }}
     >
-      {/* Left decoration */}
-      <Box
-        sx={{
-          position: 'absolute',
-          left: 0,
-          bottom: 0,
-          width: 300,
-          height: 300,
-        }}
-      >
-        <Box
-          sx={{
-            position: 'relative',
-            width: '100%',
-            height: '100%',
-          }}
-        >
-          <Box
-            sx={{
-              position: 'absolute',
-              inset: 0,
-              bgcolor: 'rgba(255, 255, 255, 0.1)',
-              borderRadius: '50%',
-            }}
-          />
-        </Box>
-      </Box>
-
-      {/* Right decoration */}
-      <Box
-        sx={{
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          width: 300,
-          height: 300,
-        }}
-      >
-        <Box
-          sx={{
-            position: 'relative',
-            width: '100%',
-            height: '100%',
-          }}
-        >
-          <Box
-            sx={{
-              position: 'absolute',
-              inset: 0,
-              bgcolor: 'rgba(255, 255, 255, 0.1)',
-              borderRadius: '50%',
-            }}
-          />
-        </Box>
-      </Box>
-
-      {/* Main content */}
+         <Box
+                        sx={{
+                          position: 'absolute',
+                          left: 0,
+                          bottom: 0,
+                          width: 300,
+                          height: 300,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            position: 'relative',
+                            width: '100%',
+                            height: '100%',
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              inset: 0,
+                              bgcolor: 'rgba(255, 255, 255, 0.1)',
+                              borderRadius: '50%',
+                            }}
+                          />
+                        </Box>
+                      </Box>
+                
+                      {/* Right decoration */}
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          right: 0,
+                          top: 0,
+                          width: 300,
+                          height: 300,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            position: 'relative',
+                            width: '100%',
+                            height: '100%',
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              inset: 0,
+                              bgcolor: 'rgba(255, 255, 255, 0.1)',
+                              borderRadius: '50%',
+                            }}
+                          />
+                        </Box>
+                      </Box>
       <Container maxWidth="sm" sx={{ mx: 2 }}>
         <Card
           sx={{
@@ -132,23 +134,80 @@ function LoginPage() {
                 component="h2"
                 sx={{ mb: 1, fontWeight: 'bold', color: '#ffffff' }}
               >
-                Log In
+                {isLogin ? 'Log In' : 'Sign Up'}
               </Typography>
               <Typography
                 variant="body1"
                 sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
               >
-                Get started with your resume
+                {isLogin
+                  ? 'Get started with your resume'
+                  : 'Create an account to start'}
               </Typography>
             </Box>
 
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              {!isLogin && (
+                <>
+                  <TextField
+                    fullWidth
+                    label="Name"
+                    variant="outlined"
+                    required
+                    sx={{ mb: 2 }}
+                    InputLabelProps={{
+                      sx: { color: 'rgba(255, 255, 255, 0.7)' },
+                    }}
+                    InputProps={{
+                      sx: {
+                        color: '#ffffff',
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderColor: '#ffffff',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#ffffff',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#ffffff',
+                          },
+                        },
+                      },
+                    }}
+                  />
+                  <TextField
+                    fullWidth
+                    label="College"
+                    variant="outlined"
+                    required
+                    sx={{ mb: 2 }}
+                    InputLabelProps={{
+                      sx: { color: 'rgba(255, 255, 255, 0.7)' },
+                    }}
+                    InputProps={{
+                      sx: {
+                        color: '#ffffff',
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderColor: '#ffffff',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#ffffff',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#ffffff',
+                          },
+                        },
+                      },
+                    }}
+                  />
+                </>
+              )}
               <TextField
                 fullWidth
                 label="Email"
                 variant="outlined"
                 type="email"
-                
                 required
                 sx={{ mb: 2 }}
                 InputLabelProps={{
@@ -159,10 +218,10 @@ function LoginPage() {
                     color: '#ffffff',
                     '& .MuiOutlinedInput-root': {
                       '& fieldset': {
-                        borderColor: 'rgba(255, 255, 255, 0.5)',
+                        borderColor: '#ffffff',
                       },
                       '&:hover fieldset': {
-                        borderColor: 'rgba(255, 255, 255, 0.7)',
+                        borderColor: '#ffffff',
                       },
                       '&.Mui-focused fieldset': {
                         borderColor: '#ffffff',
@@ -186,10 +245,10 @@ function LoginPage() {
                     color: '#ffffff',
                     '& .MuiOutlinedInput-root': {
                       '& fieldset': {
-                        borderColor: 'rgba(255, 255, 255, 0.5)',
+                        borderColor: '#ffffff',
                       },
                       '&:hover fieldset': {
-                        borderColor: 'rgba(255, 255, 255, 0.7)',
+                        borderColor: '#ffffff',
                       },
                       '&.Mui-focused fieldset': {
                         borderColor: '#ffffff',
@@ -215,9 +274,28 @@ function LoginPage() {
               >
                 {isLoading ? (
                   <CircularProgress size={24} color="inherit" />
-                ) : (
+                ) : isLogin ? (
                   'Log in'
+                ) : (
+                  'Sign up'
                 )}
+              </Button>
+            </Box>
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Button
+                variant="text"
+                onClick={toggleAuthPage}
+                sx={{
+                  color: '#ffffff',
+                  textTransform: 'none',
+                  '&:hover': {
+                    color: 'rgba(255, 255, 255, 0.7)',
+                  },
+                }}
+              >
+                {isLogin
+                  ? "Don't have an account? Sign Up"
+                  : 'Already have an account? Log In'}
               </Button>
             </Box>
           </CardContent>
@@ -227,4 +305,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default AuthPage;
