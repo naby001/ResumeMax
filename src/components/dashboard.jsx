@@ -40,6 +40,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import ResumeIcon from '../assets/images/resume.png';
 import PaperIcon from "../assets/images/paper.png";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 
 const theme = createTheme({
   palette: {
@@ -82,6 +83,8 @@ const DashboardPage = () => {
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'))
   const navigate = useNavigate();
   const [drafts,setdrafts]=useState([]);
+  const user=useSelector((state)=>state.user);
+  console.log(user);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
@@ -92,12 +95,12 @@ const DashboardPage = () => {
         <ListItem>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
             <Avatar src="/placeholder.svg" />
-            <Box>
+            <Box sx={{marginLeft:3}}>
               <Typography variant="subtitle2" color="text.primary">
                 My Account
               </Typography>
               <Typography variant="body2" color="text.secondary">
-              Boobindar pusia
+              {user.name}
               </Typography>
             </Box>
           </Box>
@@ -345,7 +348,7 @@ const DashboardPage = () => {
     WebkitBackgroundClip: 'text', 
     color: 'transparent'
   }} >
-              Maurya Samanta
+              {user.name}
             </Typography>
             </Box>
           </Toolbar>

@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState } from 'react';
 import {
   Box,
@@ -12,16 +10,67 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { WorkOutline } from '@mui/icons-material';
-
+import { setLogin } from '../state';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import logo from "../assets/images/origami.png";
 function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(true); // State to toggle between Login and Sign Up
-
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [college, setCollege] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+   
+    const data={ name, email, college, password };
+    if(!isLogin)
+    {try {
+      const response=await fetch(`http://localhost:3000/auth/signup`,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(data)
+      });
+      const retureneddata=await response.json();
+      console.log(retureneddata);
+      dispatch(
+        setLogin({
+        user: retureneddata,
+       
+      })
+    );
+    navigate("/dash");
+    } catch (error) {
+      
+    }}
+    else
+    {
+      try {
+        const response=await fetch(`http://localhost:3000/auth/login`,{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify(data)
+        });
+        const retureneddata=await response.json();
+        console.log(retureneddata);
+        dispatch(
+          setLogin({
+          user: retureneddata,
+         
+        })
+      );
+      navigate("/dash");
+      } catch (error) {
+        
+      }
+
+    }
+
+   
     setIsLoading(false);
   };
 
@@ -37,98 +86,59 @@ function AuthPage() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        bgcolor: '#000000', // Black background
+        bgcolor: '#ffffff', // Black background
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-         <Box
-                        sx={{
-                          position: 'absolute',
-                          left: 0,
-                          bottom: 0,
-                          width: 300,
-                          height: 300,
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            position: 'relative',
-                            width: '100%',
-                            height: '100%',
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              position: 'absolute',
-                              inset: 0,
-                              bgcolor: 'rgba(255, 255, 255, 0.1)',
-                              borderRadius: '50%',
-                            }}
-                          />
-                        </Box>
-                      </Box>
-                
-                      {/* Right decoration */}
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          right: 0,
-                          top: 0,
-                          width: 300,
-                          height: 300,
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            position: 'relative',
-                            width: '100%',
-                            height: '100%',
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              position: 'absolute',
-                              inset: 0,
-                              bgcolor: 'rgba(255, 255, 255, 0.1)',
-                              borderRadius: '50%',
-                            }}
-                          />
-                        </Box>
-                      </Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          left: 0,
+          bottom: 0,
+          width: 300,
+          height: 300,
+        }}
+      >
+        
+      </Box>
+
       <Container maxWidth="sm" sx={{ mx: 2 }}>
         <Card
           sx={{
             bgcolor: '#000000', // Black card
             color: '#ffffff', // White text
             border: '1px solid rgba(255, 255, 255, 0.2)', // Subtle border
-            borderRadius:'20px'
+            borderRadius: '20px',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.8)',
           }}
         >
           <CardContent sx={{ p: 4 }}>
             <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <Box
-                sx={{
-                  width: 48,
-                  height: 48,
-                  bgcolor: 'rgba(255, 255, 255, 0.1)',
-                  borderRadius: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto',
-                  mb: 2,
-                }}
-              >
-                <WorkOutline sx={{ color: '#ffffff' }} />
-              </Box>
+              <Box sx={{display:'flex', justifyContent:'center'}}>
               <Typography
                 variant="h4"
                 component="h1"
-                sx={{ mb: 1, fontWeight: 'bold', color: '#ffffff' }}
+                sx={{ mt:3, fontWeight: 'bold', color: '#ffffff' }}
               >
-                ResumeKraft
+                Resume
               </Typography>
+               <img src={logo} style={{
+        height: '90px',
+        width: '90px',
+        //filter: 'brightness(0) invert(1)', // Ensures icon is white for a black background
+        marginRight: '8px',
+      }}/>
+      <Typography
+                variant="h4"
+                component="h1"
+                sx={{ mt:3, fontWeight: 'bold', color: '#ffffff' }}
+              >
+                Kraft
+              </Typography>
+      
+              </Box>
+              
               <Typography
                 variant="h5"
                 component="h2"
@@ -136,14 +146,7 @@ function AuthPage() {
               >
                 {isLogin ? 'Log In' : 'Sign Up'}
               </Typography>
-              <Typography
-                variant="body1"
-                sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
-              >
-                {isLogin
-                  ? 'Get started with your resume'
-                  : 'Create an account to start'}
-              </Typography>
+             
             </Box>
 
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -154,6 +157,8 @@ function AuthPage() {
                     label="Name"
                     variant="outlined"
                     required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     sx={{ mb: 2 }}
                     InputLabelProps={{
                       sx: { color: 'rgba(255, 255, 255, 0.7)' },
@@ -180,6 +185,8 @@ function AuthPage() {
                     label="College"
                     variant="outlined"
                     required
+                    value={college}
+                    onChange={(e) => setCollege(e.target.value)}
                     sx={{ mb: 2 }}
                     InputLabelProps={{
                       sx: { color: 'rgba(255, 255, 255, 0.7)' },
@@ -209,6 +216,8 @@ function AuthPage() {
                 variant="outlined"
                 type="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 sx={{ mb: 2 }}
                 InputLabelProps={{
                   sx: { color: 'rgba(255, 255, 255, 0.7)' },
@@ -236,6 +245,8 @@ function AuthPage() {
                 variant="outlined"
                 type="password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 sx={{ mb: 3 }}
                 InputLabelProps={{
                   sx: { color: 'rgba(255, 255, 255, 0.7)' },
@@ -269,7 +280,7 @@ function AuthPage() {
                   '&:hover': {
                     bgcolor: 'rgba(255, 255, 255, 0.9)',
                   },
-                  borderRadius:'20px'
+                  borderRadius: '20px',
                 }}
               >
                 {isLoading ? (
