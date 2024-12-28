@@ -11,7 +11,9 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CanvasArea from "../components/CanvasArea";
 import ToolsPanel from "../components/ToolsPanel";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/images/origami.png";
+import { LogoDev } from "@mui/icons-material";
 
 const Builder = () => {
   const [zoom, setZoom] = useState(100);
@@ -19,8 +21,7 @@ const Builder = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [textBoxes, setTextBoxes] = useState([]);
   const [shapes, setShapes] = useState([]);
-const navigate = useNavigate();
-
+  const navigate = useNavigate();
 
   const addShape = (type) => {
     const newShape = {
@@ -65,19 +66,65 @@ const navigate = useNavigate();
 
   return (
     <Box display="flex" flexDirection="column" height="100vh">
-      {/* Navbar */}
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: "#121212" }}>
+        {" "}
+        {/* Dark Mode */}
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Resume K craft
+          <Typography
+            variant="h6"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              flexGrow: 1,
+              color: "#ffffff",
+            }}
+          >
+            Resume&nbsp;
+            <img
+              src={logo} // Replace with your image path
+              alt="K"
+              style={{
+                height: "24px", // Adjust height as needed
+                width: "24px", // Adjust width as needed
+                margin: "0 4px",
+              }}
+            />
+            Kraft
           </Typography>
-          <Button color="inherit" onClick={() => navigate("/dash")}>
-  Dashboard
-</Button>
-          <Button color="inherit" onClick={() => alert("Help Clicked")}>
+          <Button
+            sx={{
+              color: "inherit",
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                color: "#90caf9",
+              },
+            }}
+            onClick={() => navigate("/dash")}
+          >
+            Dashboard
+          </Button>
+          <Button
+            sx={{
+              color: "inherit",
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                color: "#90caf9",
+              },
+            }}
+            onClick={() => alert("Help Clicked")}
+          >
             Help
           </Button>
-          <Button color="inherit" onClick={() => alert("About Clicked")}>
+          <Button
+            sx={{
+              color: "inherit",
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                color: "#90caf9",
+              },
+            }}
+            onClick={() => alert("About Clicked")}
+          >
             About
           </Button>
         </Toolbar>
