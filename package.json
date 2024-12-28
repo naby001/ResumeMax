@@ -16,6 +16,11 @@
     "@mui/material": "^6.2.1",
     "@react-three/drei": "^9.120.4",
     "@react-three/fiber": "^8.17.10",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-draggable": "^4.4.6",
@@ -35,5 +40,10 @@
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.13.0",
     "vite": "^6.0.3"
-  }
+  },
+  "description": "Instructions: \r 1. fork repo\r 2. npm install\r 3. npm run dev\r 4. 5173 localhost\r    Live Link: https://resume-max-hazel.vercel.app/",
+  "main": "eslint.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
