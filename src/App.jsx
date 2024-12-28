@@ -17,7 +17,7 @@ function App() {
           <Routes>
             <Route path="/builder" element={<Builder />} />
             <Route path="/login" element={<AuthPage/>} />
-            <Route path="/dash" element={<DashboardPage/>} />
+            <Route path="/home" element={<DashboardPage/>} />
             {/* <Route path="/doc" element={<MyDocuments/>} />
             */}
           </Routes>
