@@ -11,7 +11,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CanvasArea from "../components/CanvasArea";
 import ToolsPanel from "../components/ToolsPanel";
-import { navigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const Builder = () => {
   const [zoom, setZoom] = useState(100);
@@ -19,6 +19,8 @@ const Builder = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [textBoxes, setTextBoxes] = useState([]);
   const [shapes, setShapes] = useState([]);
+const navigate = useNavigate();
+
 
   const addShape = (type) => {
     const newShape = {
@@ -69,9 +71,9 @@ const Builder = () => {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Resume K craft
           </Typography>
-          <Button color="inherit" onClick={() => navigate('/dash')}>
-            Dashboard
-          </Button>
+          <Button color="inherit" onClick={() => navigate("/dash")}>
+  Dashboard
+</Button>
           <Button color="inherit" onClick={() => alert("Help Clicked")}>
             Help
           </Button>
