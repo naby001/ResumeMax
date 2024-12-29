@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Button, Box, Avatar } from "@mui/material"
 import logo from "../assets/images/origami.png";
 import { useSelector } from "react-redux";
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
-const Navbar = () => {
+const Navbar = ({savedraft, exportToPDF}) => {
     const user=useSelector((state)=>state.user);
   return (
     <AppBar
@@ -27,7 +27,7 @@ const Navbar = () => {
         </Box>
         <Box sx={{alignItems:'center', display:'flex', flexDirection:'row', justifyContent:'center'}}>
             <Typography sx={{color:'lightgrey', fontWeight:200, letterSpacing:2}}>All changes saved</Typography>
-            <CloudDoneIcon size={20} sx={{marginLeft:3}}/>
+            <CloudDoneIcon size={20} sx={{marginLeft:3}} onClick={savedraft}/>
         </Box>
         {/* Right: Export Button and Username */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -49,6 +49,7 @@ const Navbar = () => {
     transition: "all 0.3s ease-in-out", // Smooth animations
     marginRight:5
   }}
+  onClick={exportToPDF}
 >
   Export
 </Button>

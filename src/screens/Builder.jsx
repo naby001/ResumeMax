@@ -1,6 +1,6 @@
 
 import Navbar from '../components/Navbar';
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,18 +13,46 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CanvasArea from "../components/CanvasArea";
 import ToolsPanel from "../components/ToolsPanel";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/images/origami.png";
-
+import { useSelector } from 'react-redux';
+import {jsPDF} from 'jspdf';
 const Builder = () => {
   const [zoom, setZoom] = useState(100);
+  const location = useLocation();
+  const { draft } = location.state || {};
+  console.log(draft)
   const [pages, setPages] = useState([1]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [textBoxes, setTextBoxes] = useState([]); // Manage text boxes
-  const [shapes, setShapes] = React.useState([]);
-  const [icons,setIcons]=React.useState([]);
- 
+  const [textBoxes, setTextBoxes] = useState(draft?.textboxes || []); // Manage text boxes
+  const [shapes, setShapes] = React.useState(draft?.shapes || []);
+  const [icons,setIcons]=React.useState(draft?.icons || []);
+  const user=useSelector((state)=>state.user);
   const navigate = useNavigate();
+
+  const savedraft=async()=>{
+    try {
+      const requestData = {
+        name: textBoxes[0]?.text || "Untitled", // Safely access the first textbox or default to "Untitled"
+        creator_id: user._id,
+        textboxes: [...textBoxes], // Copy the array of textboxes
+        shapes: [...shapes],       // Copy the array of shapes
+        icons: [...icons],         // Copy the array of icons
+      };
+      //console.log(formData.entries());
+      const response=await fetch("https://resumemaxbackend.onrender.com/drafts/save",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(requestData)
+      });
+      const returneddata=await response.json();
+      const draft=returneddata.draft;
+     // console.log(draft);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   const addShape = (type) => {
     const newShape = {
@@ -79,9 +107,97 @@ const Builder = () => {
     ]);
   };
 
+  const canvasRef = useRef(null);
+
+  const drawContent = () => {
+    const canvas = canvasRef.current;
+    if(canvas)
+   { const context = canvas.getContext('2d');
+
+    // Adjust canvas size based on zoom and page number if necessary
+    const scale = zoom || 1;
+    const width = canvas.width * scale;
+    const height = canvas.height * scale;
+    context.clearRect(0, 0, width, height);
+
+    // Render shapes, textBoxes, icons on the canvas
+    // Draw shapes
+    shapes.forEach((shape) => {
+      context.beginPath();
+      context.arc(shape.x * scale, shape.y * scale, shape.radius * scale, 0, 2 * Math.PI);
+      context.fillStyle = shape.color;
+      context.fill();
+    });
+
+    // Draw textBoxes
+    textBoxes.forEach((box) => {
+      if (box.page === pageNumber) {
+        context.font = `${box.fontSize * scale}px Arial`;
+        context.fillStyle = box.color;
+        context.fillText(box.text, box.x * scale, box.y * scale);
+      }
+    });
+
+    // Draw icons (for example, using image or symbol)
+    icons.forEach((icon) => {
+      const img = new Image();
+      img.src = icon.src;
+      img.onload = () => {
+        context.drawImage(img, icon.x * scale, icon.y * scale, icon.width * scale, icon.height * scale);
+      };
+    });}
+  };
+  const exportToPDF = () => {
+    // Create a new jsPDF instance
+    const pdf = new jsPDF();
+
+    // Define A4 page size (210mm x 297mm)
+    const pageWidth = 210;
+    const pageHeight = 297;
+
+    // Optional: If you want to scale the content based on the zoom
+    const scale = zoom || 1;
+
+    // Loop through the shapes array and draw on PDF
+    shapes.forEach((shape) => {
+      if (shape.type === 'circle') {
+        // Draw circle (x, y, radius)
+        pdf.setFillColor(shape.color);
+        pdf.circle(shape.x * scale, shape.y * scale, shape.radius * scale, 'F');
+      }
+      // You can add more shapes here (rectangles, lines, etc.)
+    });
+
+    // Loop through the textBoxes array and draw text on PDF
+    textBoxes.forEach((box) => {
+        console.log(box.x);
+        pdf.setFontSize(box.fontSize * scale);
+      //  pdf.setTextColor(box.color);
+        pdf.text('hdfhdd', 14, 50);
+      
+    });
+
+    // Loop through the icons array and draw images on the PDF
+    icons.forEach((icon) => {
+      const img = new Image();
+      img.src = icon.src;
+
+      img.onload = () => {
+        // Add image to PDF (x, y, width, height)
+        pdf.addImage(img, 'PNG', icon.x * scale, icon.y * scale, icon.width * scale, icon.height * scale);
+        
+        // If you want to save the PDF after the image is loaded, call pdf.save() here
+        pdf.save('canvas-content.pdf');
+      };
+    });
+
+    // Save the PDF after drawing everything
+    pdf.save('resume.pdf');
+  };
+
   return (
     <Box>
-      <Navbar/>
+      <Navbar savedraft={savedraft} exportToPDF={exportToPDF}/>
     <Box display="flex" height="100vh">
       
       {/* Tools Panel */}
@@ -119,7 +235,8 @@ const Builder = () => {
           shapes={shapes}
           setShapes={setShapes}
           icons={icons}
-          setIcons={setIcons}/>
+          setIcons={setIcons}
+          ref={canvasRef}/>
         </Box>
 
         {/* Add Page Button */}

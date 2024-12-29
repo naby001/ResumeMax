@@ -13,7 +13,7 @@ import * as Resizable from 'react-resizable';
 import { Rnd } from "react-rnd";
 import IconRenderer from './IconRenderer';
 
-const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShapes, icons, setIcons }) => {
+const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShapes, icons, setIcons, ref }) => {
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [menuPosition, setMenuPosition] = useState(null);
   const [focusedShapeIndex, setFocusedShapeIndex] = useState(null);
@@ -157,6 +157,7 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShape
       position="relative"
       mb={2}
       sx={zoomStyle}
+      ref={ref}
     >
 
 {icons?.map((icon, index) => (

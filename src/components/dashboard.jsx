@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   AppBar,
   Box,
@@ -32,7 +32,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ResumeIcon from '../assets/images/resume.png'
 import PaperIcon from '../assets/images/paper.png'
-
+import DraftCard from './DraftCard'
 const theme = createTheme({
   palette: {
     mode: 'light',
@@ -75,7 +75,25 @@ const DashboardPage = () => {
   const navigate = useNavigate()
   const [drafts, setDrafts] = useState([])
   const user = useSelector((state) => state.user) || { name: 'Guest' } // Fallback for user.name
+  const getdrafts=async()=>{
+    try {
+      const data={creator_id:user._id};
+      const response=await fetch("https://resumemaxbackend.onrender.com/drafts/getdrafts",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(data)
+      });
+      const returneddata=await response.json();
 
+      setDrafts(returneddata.drafts);
+    } catch (error) {
+      
+    }
+  }
+
+  useEffect(()=>{
+    getdrafts();
+  },[]);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
@@ -211,11 +229,7 @@ const DashboardPage = () => {
       <Grid container spacing={2}>
         {drafts.map((draft, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Draft {index + 1}</Typography>
-              </CardContent>
-            </Card>
+            <DraftCard draft={draft} />
           </Grid>
         ))}
       </Grid>
