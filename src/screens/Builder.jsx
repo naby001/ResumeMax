@@ -45,7 +45,7 @@ const Builder = () => {
         requestData={...requestData,id:x};
       }
       //console.log(formData.entries());
-      const response=await fetch("https://resumemaxbackend.onrender.com/drafts/save",{
+      const response=await fetch("http://localhost:3000/drafts/save",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify(requestData)
