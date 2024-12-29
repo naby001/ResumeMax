@@ -5,6 +5,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 import CanvasArea from '../components/CanvasArea';
 import ToolsPanel from '../components/ToolsPanel';
+import Navbar from '../components/Navbar';
 
 const Builder = () => {
   const [zoom, setZoom] = useState(100);
@@ -12,7 +13,7 @@ const Builder = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [textBoxes, setTextBoxes] = useState([]); // Manage text boxes
   const [shapes, setShapes] = React.useState([]);
-
+  const [icons,setIcons]=React.useState([]);
   const addShape = (type) => {
     const newShape = {
       id: Date.now(),
@@ -26,6 +27,19 @@ const Builder = () => {
     setShapes((prevShapes) => [...prevShapes, newShape]);
    // console.log(shapes);
   };
+
+  const addIcons=(type)=>{
+    const newIcon={
+      id:Date.now(),
+      type,
+      color:"black",
+      x:100,
+      y:100,
+      width:30,
+      height:30
+    };
+    setIcons((prevIcons)=>[...prevIcons,newIcon]);
+  }
   const handleZoom = (value) => {
     setZoom(value);
   };
@@ -50,9 +64,12 @@ const Builder = () => {
   };
 
   return (
+    <Box>
+      <Navbar/>
     <Box display="flex" height="100vh">
+      
       {/* Tools Panel */}
-      <ToolsPanel addTextBox={addTextBox} addShape={addShape}/>
+      <ToolsPanel addTextBox={addTextBox} addShape={addShape} addIcon={addIcons}/>
 
       {/* Main Canvas Area */}
       <Box
@@ -84,7 +101,9 @@ const Builder = () => {
           textBoxes={textBoxes.filter((box) => box.page === currentPage)} // Filter by page
           setTextBoxes={setTextBoxes}
           shapes={shapes}
-          setShapes={setShapes}/>
+          setShapes={setShapes}
+          icons={icons}
+          setIcons={setIcons}/>
         </Box>
 
         {/* Add Page Button */}
@@ -130,6 +149,7 @@ const Builder = () => {
           ))}
         </Box>
       </Box>
+    </Box>
     </Box>
   );
 };

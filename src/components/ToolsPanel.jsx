@@ -36,7 +36,7 @@ import TextBoxIcon from '../assets/images/text-box.png';
 import CircleIcon from '@mui/icons-material/Circle';
 import SquareIcon from '@mui/icons-material/CheckBoxOutlineBlank'; // For rectangle (square-like icon)
 import RemoveIcon from '@mui/icons-material/Remove'; // For line
-const ToolsPanel = ({addTextBox, addShape}) => {
+const ToolsPanel = ({addTextBox, addShape, addIcon}) => {
   const [activeTab, setActiveTab] = useState('text');
   const [imagePreview, setImagePreview] = useState(null);
   const [tableModalOpen, setTableModalOpen] = useState(false);
@@ -296,38 +296,36 @@ const ToolsPanel = ({addTextBox, addShape}) => {
 
         {activeTab === 'shapes' && (
           <Box>
-            <Typography variant="h6" fontWeight="bold" color="primary.main">
-              Shapes & Icons
-            </Typography>
+            
             <Box display="flex" gap={2} flexWrap="wrap">
-              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }} >
                 <InsertEmoticonIcon />
               </IconButton>
-              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }} onClick={()=>{addIcon("github")}}>
                 <GitHubIcon />
               </IconButton>
-              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}onClick={()=>{addIcon("phone")}}>
                 <PhoneIcon />
               </IconButton>
-              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }} onClick={()=>{addIcon("email")}}>
                 <EmailIcon />
               </IconButton>
-              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }} onClick={()=>{addIcon("facebook")}}>
                 <FacebookIcon />
               </IconButton>
-              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }} onClick={()=>{addIcon("insta")}}>
                 <InstagramIcon/>
               </IconButton>
-              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }} onClick={()=>{addIcon("wa")}}>
                 < WhatsAppIcon />
               </IconButton>
-              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }} onClick={()=>{addIcon("linkedin")}}>
                 < LinkedInIcon />
               </IconButton>
-              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }} onClick={()=>{addIcon("twitter")}}>
                 < TwitterIcon />
               </IconButton>
-              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }}>
+              <IconButton sx={{ backgroundColor: 'lightgrey', '&:hover': { backgroundColor: 'grey' } }} onClick={()=>{addIcon("yt")}}>
                 <YouTubeIcon />
               </IconButton>
 
@@ -387,12 +385,7 @@ const ToolsPanel = ({addTextBox, addShape}) => {
     </IconButton>
   </Tooltip>
   </Box>
-              <Button variant="outlined" fullWidth sx={{ mb: 2 }}>
-                Add Icon
-              </Button>
-              <Button variant="outlined" fullWidth onClick={() => setTableModalOpen(true)}>
-                Add Table
-              </Button>
+             
             </Box>
           </Box>
         )}

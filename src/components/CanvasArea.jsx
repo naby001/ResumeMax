@@ -10,11 +10,14 @@ import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import * as Resizable from 'react-resizable';
-const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShapes }) => {
+import { Rnd } from "react-rnd";
+import IconRenderer from './IconRenderer';
+
+const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShapes, icons, setIcons }) => {
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [menuPosition, setMenuPosition] = useState(null);
   const [focusedShapeIndex, setFocusedShapeIndex] = useState(null);
-
+  const [focusedIconIndex,setFocusedIconIndex]=useState(null);
   const [styles, setStyles] = useState({
     fontWeight: "normal",
     fontStyle: "normal",
@@ -39,14 +42,39 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShape
     updatedTextBoxes[index].x = data.x;
     updatedTextBoxes[index].y = data.y;
     setTextBoxes(updatedTextBoxes);
+    
   };
 
   const handleDragShapes = (index, data) => {
     const updatedShapes = [...shapes];
-    //console.log(index);
-    updatedShapes[0].x = data.x;
-    updatedShapes[0].y = data.y;
+   // console.log(index);
+    updatedShapes[index].x = data.x;
+    updatedShapes[index].y = data.y;
     setShapes(updatedShapes);
+  };
+
+  const handleDragIcon = (index, data) => {
+    const updatedIcons = [...icons];
+   // console.log(index);
+    updatedIcons[index].x = data.x;
+    updatedIcons[index].y = data.y;
+    setIcons(updatedIcons);
+  };
+
+  const handleResizeShapes = (index, data) => {
+    const updatedShapes = [...shapes];
+    //console.log(index);
+    updatedShapes[index].width = data.width;
+    updatedShapes[index].height = data.height;
+    setShapes(updatedShapes);
+  };
+
+  const handleResizeIcons = (index, data) => {
+    const updatedIcons = [...icons];
+    //console.log(index);
+    updatedIcons[index].width = data.width;
+    updatedIcons[index].height = data.height;
+    setShapes(updatedIcons);
   };
 
   const handleDeleteTextBox = () => {
@@ -60,6 +88,13 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShape
     if (focusedShapeIndex !== null) {
       setShapes((prev) => prev.filter((_, index) => index !== focusedShapeIndex));
       setFocusedShapeIndex(null);
+    }
+  };
+
+  const handleDeleteIcon = () => {
+    if (focusedIconIndex !== null) {
+      setIcons((prev) => prev.filter((_, index) => index !== focusedIconIndex));
+      setFocusedIconIndex(null);
     }
   };
   const toggleStyle = (key, value) => {
@@ -102,12 +137,16 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShape
       if (event.key === 'Delete' && focusedShapeIndex !== null) {
         handleDeleteShape();
       }
+      if (event.key === 'Delete' && focusedIconIndex !== null) {
+       // console.log(focusedIconIndex)
+        handleDeleteIcon();
+      }
     
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [focusedIndex, focusedShapeIndex]);
+  }, [focusedIndex, focusedShapeIndex, focusedIconIndex]);
 
   return (
     <Box
@@ -119,8 +158,25 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShape
       mb={2}
       sx={zoomStyle}
     >
+
+{icons?.map((icon, index) => (
+          <IconRenderer key={index}
+           index={index}
+           icon={icon}
+           updateIcon={handleDragIcon} 
+           updateIconStruct={handleResizeIcons}
+           focusedIconIndex={focusedIconIndex}
+           setFocusedIconIndex={setFocusedIconIndex} />
+        ))}
+
        {shapes?.map((shape, index) => (
-          <ShapeRenderer key={index} index={index} shape={shape} updateShape={handleDragShapes} setFocusedShapeIndex={setFocusedShapeIndex}/>
+          <ShapeRenderer key={index}
+           index={index}
+           shape={shape}
+           updateShape={handleDragShapes} 
+           updateShapeStruct={handleResizeShapes}
+           focusedShapeIndex={focusedShapeIndex}
+           setFocusedShapeIndex={setFocusedShapeIndex}/>
         ))}
     {/* Render Draggable Text Boxes */}
       {textBoxes?.map((textBox, index) => (
@@ -310,38 +366,46 @@ const CanvasArea = ({ zoom, pageNumber, textBoxes, setTextBoxes, shapes,setShape
   );
 };
 
-const ShapeRenderer = ({ shape, updateShape,index,setFocusedShapeIndex }) => {
+
+
+const ShapeRenderer = ({ shape, updateShape,updateShapeStruct,index,focusedShapeIndex,setFocusedShapeIndex }) => {
   const isCircle = shape.type === "circle";
   const isLine = shape.type === "line";
   
   const handleFocusShape = () => {
     setFocusedShapeIndex(index);
+    //console.log(focusedShapeIndex);
   };
 
   return (
-    <Draggable
-     defaultPosition={{ x: shape.x, y: shape.y }}
-     onStart={handleFocusShape}
-      onStop={(e, data) =>
-        {console.log('drag stopped');updateShape(index, { x: data.x, y: data.y })}
-      }
-   
-    >
+    <Rnd
+  size={{ width: shape.width,  height: shape.height }}
+  position={{ x: shape.x, y: shape.y }}
+  onDragStart={handleFocusShape}
+  onDragStop={(e, data) => { updateShape(index, { x: data.x, y: data.y }); setFocusedShapeIndex(null); }}
+  onResizeStart={handleFocusShape}
+  onResizeStop={(e, direction, ref, delta, position) => {
+    
+    updateShapeStruct(index,{width: ref.style.width,
+      height: ref.style.height,})
+    
+  }}
+>
       <div
         style={{
           position: "absolute",
-          border: isLine ? "none" : `2px solid ${shape.color}`,
+          border: isLine ? `1px solid ${shape.color}` : `2px solid ${shape.color}`,
           
           backgroundColor: isCircle ? "transparent" : "transparent",
           borderRadius: isCircle ? "50%" : "0",
           width: isLine ? shape.width : shape.width,
-          height: isLine ? "2px" : shape.height,
+          height: isLine ? "1px" : shape.height,
         }}
         onClick={handleFocusShape}
       >
        
       </div>
-    </Draggable>
+    </Rnd>
   );
 };
 
