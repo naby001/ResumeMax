@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, Button, Box, Avatar } from "@mui/material";
 import logo from "../assets/images/origami.png";
 import { useSelector } from "react-redux";
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
+import { keyframes } from "@mui/material";
 const Navbar = ({savedraft, exportToPDF}) => {
     const user=useSelector((state)=>state.user);
+    const [showsaved,setshowsaved]=useState(false);
+    const slideInLeftToRight = keyframes`
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  `;
+
   return (
     <AppBar
   position="static"
@@ -26,8 +39,13 @@ const Navbar = ({savedraft, exportToPDF}) => {
           
         </Box>
         <Box sx={{alignItems:'center', display:'flex', flexDirection:'row', justifyContent:'center'}}>
-            <Typography sx={{color:'lightgrey', fontWeight:200, letterSpacing:2}}>All changes saved</Typography>
-            <CloudDoneIcon size={20} sx={{marginLeft:3}} onClick={savedraft}/>
+            <Typography sx={{color:'lightgrey', fontWeight:200, letterSpacing:2, animation: `${slideInLeftToRight} 1s ease-out`, // Apply the animation here
+        display: 'inline-block',}}>{!showsaved?"Click here to Save":"All Changes Saved"}</Typography>
+            <CloudDoneIcon size={20} sx={{marginLeft:3}} onClick={()=>{savedraft();setshowsaved(true);
+                setTimeout(() => {
+                  setshowsaved(false); // After 3 seconds, set showsaved back to false
+                }, 3000);
+            }}/>
         </Box>
         {/* Right: Export Button and Username */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>

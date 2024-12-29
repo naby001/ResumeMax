@@ -30,7 +30,7 @@ function AuthPage() {
     const data={ name, email, college, password };
     if(!isLogin)
     {try {
-      const response=await fetch(`https://resumemaxbackend.onrender.com/auth/signup`,{
+      const response=await fetch(`http://localhost:3000/auth/signup`,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify(data)
@@ -50,7 +50,7 @@ function AuthPage() {
     else
     {
       try {
-        const response=await fetch(`https://resumemaxbackend.onrender.com/auth/login`,{
+        const response=await fetch(`http://localhost:3000/auth/login`,{
           method:"POST",
           headers:{"Content-Type":"application/json"},
           body:JSON.stringify(data)

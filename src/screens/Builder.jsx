@@ -21,7 +21,7 @@ const Builder = () => {
   const [zoom, setZoom] = useState(100);
   const location = useLocation();
   const { draft } = location.state || {};
-  console.log(draft)
+  const x=draft?._id;
   const [pages, setPages] = useState([1]);
   const [currentPage, setCurrentPage] = useState(1);
   const [textBoxes, setTextBoxes] = useState(draft?.textboxes || []); // Manage text boxes
@@ -29,18 +29,23 @@ const Builder = () => {
   const [icons,setIcons]=React.useState(draft?.icons || []);
   const user=useSelector((state)=>state.user);
   const navigate = useNavigate();
-
+  
   const savedraft=async()=>{
     try {
-      const requestData = {
+      let requestData = {
         name: textBoxes[0]?.text || "Untitled", // Safely access the first textbox or default to "Untitled"
         creator_id: user._id,
         textboxes: [...textBoxes], // Copy the array of textboxes
         shapes: [...shapes],       // Copy the array of shapes
         icons: [...icons],         // Copy the array of icons
+       
       };
+      console.log(x);
+      if(x){
+        requestData={...requestData,id:x};
+      }
       //console.log(formData.entries());
-      const response=await fetch("https://resumemaxbackend.onrender.com/drafts/save",{
+      const response=await fetch("http://localhost:3000/drafts/save",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify(requestData)

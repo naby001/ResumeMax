@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const DraftCard = ({ draft }) => {
   // Format the created_at timestamp to a readable format
-  const formattedDate = new Date(draft.created_at).toLocaleString("en-US", {
+  const formattedDate = new Date(draft.updated_at || draft.created_at).toLocaleString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
