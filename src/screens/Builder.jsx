@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
-import { Box, Button, IconButton, Typography } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 
-import CanvasArea from '../components/CanvasArea';
-import ToolsPanel from '../components/ToolsPanel';
 import Navbar from '../components/Navbar';
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  Button,
+  IconButton,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import CanvasArea from "../components/CanvasArea";
+import ToolsPanel from "../components/ToolsPanel";
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/images/origami.png";
 
 const Builder = () => {
   const [zoom, setZoom] = useState(100);
@@ -14,6 +23,9 @@ const Builder = () => {
   const [textBoxes, setTextBoxes] = useState([]); // Manage text boxes
   const [shapes, setShapes] = React.useState([]);
   const [icons,setIcons]=React.useState([]);
+ 
+  const navigate = useNavigate();
+
   const addShape = (type) => {
     const newShape = {
       id: Date.now(),
@@ -25,7 +37,6 @@ const Builder = () => {
       color: "black",
     };
     setShapes((prevShapes) => [...prevShapes, newShape]);
-   // console.log(shapes);
   };
 
   const addIcons=(type)=>{
@@ -48,15 +59,20 @@ const Builder = () => {
     setPages((prev) => [...prev, prev.length + 1]);
   };
 
-  const handlePageChange = (event, newPage) => {
-    setCurrentPage(newPage);
-  };
-
   const addTextBox = () => {
     setTextBoxes((prev) => [
       ...prev,
-      { x: 50, y: 50, text: 'New Text', page: currentPage, font:'Times New Roman', color:'black', style:'bold', fontSize:14, fontWeight:"normal"
-        ,fontStyle: "normal",
+      {
+        x: 50,
+        y: 50,
+        text: "New Text",
+        page: currentPage,
+        font: "Times New Roman",
+        color: "black",
+        style: "bold",
+        fontSize: 14,
+        fontWeight: "normal",
+        fontStyle: "normal",
         textDecoration: "none",
         textAlign: "left",
       },
@@ -127,29 +143,32 @@ const Builder = () => {
           Pages
         </Typography>
         <Box display="flex" flexDirection="column" gap={2}>
-          {pages.map((page) => (
-            <Button
-              key={page}
-              variant="outlined"
-              onClick={() => setCurrentPage(page)}
-              sx={{
-                justifyContent: 'flex-start',
-                textAlign: 'left',
-                border: page === currentPage ? '2px solid blue' : '1px solid #ccc',
-                borderRadius: '8px',
-                padding: '8px',
-                backgroundColor: page === currentPage ? '#e3f2fd' : 'transparent',
-                '&:hover': {
-                  backgroundColor: page === currentPage ? '#c8e6c9' : '#f1f1f1',
-                },
-              }}
-            >
-              Page {page}
-            </Button>
-          ))}
+        {pages.map((page) => (
+              <Button
+                key={page}
+                variant="outlined"
+                onClick={() => setCurrentPage(page)}
+                sx={{
+                  justifyContent: "flex-start",
+                  textAlign: "left",
+                  border:
+                    page === currentPage ? "2px solid blue" : "1px solid #ccc",
+                  borderRadius: "8px",
+                  padding: "8px",
+                  backgroundColor:
+                    page === currentPage ? "#e3f2fd" : "transparent",
+                  "&:hover": {
+                    backgroundColor:
+                      page === currentPage ? "#c8e6c9" : "#f1f1f1",
+                  },
+                }}
+              >
+                Page {page}
+              </Button>
+            ))}
+          </Box>
         </Box>
       </Box>
-    </Box>
     </Box>
   );
 };
