@@ -78,7 +78,7 @@ const DashboardPage = () => {
   const getdrafts=async()=>{
     try {
       const data={creator_id:user._id};
-      const response=await fetch("http://localhost:3000/drafts/getdrafts",{
+      const response=await fetch("https://resumemaxbackend.onrender.com/drafts/getdrafts",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify(data)
