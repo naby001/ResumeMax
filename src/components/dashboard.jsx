@@ -254,6 +254,8 @@ const DashboardPage = () => {
             width: { md: `calc(100% - ${drawerWidth}px)` },
             ml: { md: `${drawerWidth}px` },
             bgcolor: 'background.paper',
+            borderBottomRightRadius:8,
+            borderBottomLeftRadius:8
           }}
         >
           <Toolbar>
