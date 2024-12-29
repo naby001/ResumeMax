@@ -227,7 +227,7 @@ const DashboardPage = () => {
         Your Drafts
       </Typography>
       <Grid container spacing={2}>
-        {drafts.map((draft, index) => (
+        {drafts?.map((draft, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
             <DraftCard draft={draft} />
           </Grid>
