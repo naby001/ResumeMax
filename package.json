@@ -46,6 +46,9 @@
     "globals": "^15.13.0",
     "vite": "^6.0.3"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
+  },
   "description": "Instructions: \r 1. fork repo\r 2. npm install\r 3. npm run dev\r 4. 5173 localhost\r    Live Link: https://resume-max-hazel.vercel.app/",
   "main": "eslint.config.js",
   "keywords": [],
