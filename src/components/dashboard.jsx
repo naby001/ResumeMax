@@ -245,7 +245,7 @@ const DashboardPage = () => {
           </Grid>
         ))}
       </Grid>
-      {drafts.length === 0 && (
+      {drafts?.length === 0 && (
         <Box
           sx={{
             display: 'flex',
