@@ -10,16 +10,7 @@ Features:
 2. Choose one of our templates and fill our the details on the form and get a ready resume in seconds
 3. Saving and editing saved resumes
 4. Exporting resumes in PDF format
-## Tech Stack
-React.JS,
-Node.JS,
-MongoDB,
-Express.JS
-## Dependancies:
-react-rnd
-jspdf
-materialui
-react-redux
+
 ## Installation
 Backend:
 cd backend
