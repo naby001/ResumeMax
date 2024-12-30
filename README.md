@@ -34,7 +34,7 @@ React.JS,
 Node.JS,
 MongoDB,
 Express.JS
-Dependancies:
+## Dependancies:
 react-rnd
 jspdf
 materialui
