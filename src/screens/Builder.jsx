@@ -108,6 +108,8 @@ const Builder = () => {
         fontStyle: "normal",
         textDecoration: "none",
         textAlign: "left",
+        width:100,
+        height:50
       },
     ]);
   };

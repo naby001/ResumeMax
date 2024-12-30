@@ -5,19 +5,20 @@ import DashboardPage from "./components/dashboard";
 
 
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { useSelector } from "react-redux";
 
 
 function App() {
- 
+  const user=useSelector((state)=>state.user);
   return (
     <div className="app">
       <BrowserRouter>
           
           <CssBaseline />
           <Routes>
-            <Route path="/builder" element={<Builder />} />
+            {user && <Route path="/builder" element={<Builder />} />}
             <Route path="/" element={<AuthPage/>} />
-            <Route path="/dash" element={<DashboardPage/>} />
+            {user && <Route path="/dash" element={<DashboardPage/>} />}
             
           </Routes>
 

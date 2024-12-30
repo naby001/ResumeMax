@@ -167,6 +167,8 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [focusedIndex,focusedShapeIndex,focusedIconIndex]);
 
+  
+
   return (
     <Box
       id="canvas-area" // Add this ID
@@ -181,11 +183,29 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
     >
       {/* Render Text Boxes */}
       {textBoxes?.map((textBox, index) => (
-        <Draggable
-          key={index}
-          defaultPosition={{ x: textBox.x, y: textBox.y }}
-          onStop={(e, data) => handleDrag(index, data)}
-        >
+        <Rnd
+        key={index}
+        size={{ width: textBox.width, height: textBox.height }}
+        position={{ x: textBox.x, y: textBox.y }}
+        onDragStart={()=>{
+          setFocusedIndex(index);
+          //console.log(textBoxes[0])
+        }}
+        onDragStop={(e, d) => handleDrag(index, {x:d.x,y:d.y})}
+        onResizeStart={()=>{setFocusedIndex(index);}}
+        onResizeStop={(e, direction, ref, delta, position) => {
+          const updatedTextBoxes = [...textBoxes];
+          updatedTextBoxes[index] = {
+            ...updatedTextBoxes[index],
+            width: ref.style.width,
+            height:ref.style.height,
+            ...position,
+          };
+          setTextBoxes(updatedTextBoxes);
+          setFocusedIndex(null)
+          console.log(textBoxes);
+        }}
+      >
           <Box
             sx={{
               position: 'absolute',
@@ -193,6 +213,8 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
               backgroundColor: 'rgba(255, 255, 255, 0.8)',
               borderRadius: '4px',
               cursor: 'move',
+               borderColor:  'blue',
+               borderWidth: '2px',
               zIndex: textBox.zIndex || 1, // Ensure zIndex is set
               '&:hover': {
                 borderColor: 'blue',
@@ -204,10 +226,14 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
             <TextField
               variant="outlined"
               onFocus={(e) => handleFocus(e, index)}
+              onBlur={()=>{setFocusedIndex(null)}}
               value={textBox.text}
               onChange={(e) => handleTextChange(index, e.target.value)}
               multiline
               sx={{
+                border:focusedIndex===index &&'1px solid black',
+                width:`${textBox.width}`,
+                    height:`${textBox.height}`,
                 '& .MuiOutlinedInput-root': {
                   '& fieldset': {
                     border: 'none',
@@ -221,12 +247,14 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
                     color: textBox.color || '#000000',
                     fontFamily: textBox.fontFamily || 'Arial',
                     backgroundColor: 'transparent',
+                    
                   },
+                  
                 },
               }}
             />
           </Box>
-        </Draggable>
+        </Rnd>
       ))}
 
       {/* Render Shapes */}

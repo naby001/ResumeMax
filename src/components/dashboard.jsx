@@ -29,10 +29,11 @@ import {
 } from '@mui/icons-material'
 import { blue } from '@mui/material/colors'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ResumeIcon from '../assets/images/resume.png'
 import PaperIcon from '../assets/images/paper.png'
 import DraftCard from './DraftCard'
+import { setLogout } from '../state'
 const theme = createTheme({
   palette: {
     mode: 'light',
@@ -75,6 +76,7 @@ const DashboardPage = () => {
   const navigate = useNavigate()
   const [drafts, setDrafts] = useState([])
   const user = useSelector((state) => state.user) || { name: 'Guest' } // Fallback for user.name
+  const dispatch=useDispatch();
   const getdrafts=async()=>{
     try {
       const data={creator_id:user._id};
@@ -145,6 +147,12 @@ const DashboardPage = () => {
           borderRadius: '12px',
           fontSize: '1rem',
         }}
+        onClick={()=>{
+          dispatch(
+                    setLogout())
+                    navigate('/');
+        }}
+        
       >
         Log Out
       </Button>
