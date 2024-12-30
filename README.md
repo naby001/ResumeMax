@@ -5,7 +5,7 @@
 ## Overview
 
 ResumeKraft is a full stack webapp that can be used for creating resumes.
-Resumes can designed in the following ways
+Resumes can designed in the following ways on ResumeKraft:
 1. Start from a blank paper and drop your elements spanning over texts, shapes, icons and photos
 2. Choose one of our templates and fill our the details on the form and get a ready resume in seconds
 ## Tech Stack
