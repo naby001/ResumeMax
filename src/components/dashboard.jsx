@@ -191,7 +191,9 @@ const DashboardPage = () => {
                 backgroundColor: '#5c96bd',
                 cursor: 'pointer',
               }}
-              onClick={() => navigate('/builder')}
+              onClick={() => {if(item.id===1)navigate('/builder')
+                else
+                navigate('/temp')}}
             >
               <CardContent>
                 <Box
