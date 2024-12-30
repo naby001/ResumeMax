@@ -10,8 +10,29 @@ import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Rnd } from "react-rnd";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import TwitterIcon from "@mui/icons-material/Twitter";
 
-const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, ref }) => {
+const iconMap = {
+  github: <GitHubIcon />,
+  phone: <PhoneIcon />,
+  email: <EmailIcon />,
+  facebook: <FacebookIcon />,
+  yt: <YouTubeIcon />,
+  insta: <InstagramIcon />,
+  wa: <WhatsAppIcon />,
+  linkedin: <LinkedInIcon />,
+  twitter: <TwitterIcon />,
+};
+
+const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, setIcons, ref }) => {
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [menuPosition, setMenuPosition] = useState(null);
   const [highestZIndex, setHighestZIndex] = useState(1);
@@ -103,6 +124,14 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, ref }) =
     setShapes(updatedShapes);
   };
 
+  // Icon Handlers
+  const handleIconDrag = (index, x, y) => {
+    const updatedIcons = [...icons];
+    updatedIcons[index].x = x;
+    updatedIcons[index].y = y;
+    setIcons(updatedIcons);
+  };
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Delete' && focusedIndex !== null) {
@@ -132,8 +161,6 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, ref }) =
           defaultPosition={{ x: textBox.x, y: textBox.y }}
           onStop={(e, data) => handleDrag(index, data)}
         >
-          
-        
           <Box
             sx={{
               position: 'absolute',
@@ -174,8 +201,6 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, ref }) =
               }}
             />
           </Box>
-
-
         </Draggable>
       ))}
 
@@ -206,6 +231,29 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, ref }) =
               borderRadius: shape.type === 'circle' ? '50%' : '0',
             }}
           />
+        </Rnd>
+      ))}
+
+      {/* Render Icons */}
+      {icons?.map((icon, index) => (
+        <Rnd
+          key={index}
+          size={{ width: icon.width, height: icon.height }}
+          position={{ x: icon.x, y: icon.y }}
+          onDragStop={(e, d) => handleIconDrag(index, d.x, d.y)}
+          enableResizing={false}
+        >
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {iconMap[icon.type] || <div>No Icon</div>}
+          </Box>
         </Rnd>
       ))}
 
