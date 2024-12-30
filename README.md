@@ -13,12 +13,12 @@ Features:
 
 ## Installation
 Backend:
-cd backend
+cd ResumeMaxBackend
 npm install
 npm run dev
 
 Frontend:
-cd client
+cd ResumeMax
 npm install
 npm run dev
 
