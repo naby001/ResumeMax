@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ResumeIcon from '../assets/images/resume.png'
 import PaperIcon from '../assets/images/paper.png'
 import DraftCard from './DraftCard'
+import TemplateIcon from "../assets/images/template.png";
 import { setLogout } from '../state'
 const theme = createTheme({
   palette: {
@@ -171,7 +172,8 @@ const DashboardPage = () => {
     >
       <Grid container spacing={2} sx={{ mb: 4 }}>
         {[
-          { title: 'Resume Builder', description: 'Create and edit your resumes.' },
+          { id:1,title: 'Resume Builder', description: 'Create and edit your resumes.' },
+          { id:2,title: 'Explore Templates', description: 'Create Resumes on-the-go using templates' },
         ].map((item) => (
           <Grid item xs={12} sm={6} md={4} key={item.title}>
             <Card
@@ -213,7 +215,7 @@ const DashboardPage = () => {
                     {item.title}
                   </Typography>
                   <img
-                    src={ResumeIcon}
+                    src={item.id==1?ResumeIcon:TemplateIcon}
                     alt="Resume"
                     style={{ width: '80px', height: '80px' }}
                   />
@@ -227,8 +229,10 @@ const DashboardPage = () => {
                 </Typography>
               </CardContent>
             </Card>
+           
           </Grid>
         ))}
+        
       </Grid>
 
       <Typography variant="h6" sx={{ mb: 2 }}>
