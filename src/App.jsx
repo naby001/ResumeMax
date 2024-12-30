@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import Builder from './screens/Builder';
 import AuthPage from "./components/login";
 import DashboardPage from "./components/dashboard";
-// import MyDocuments from "./components/document";
+
 
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
@@ -18,8 +18,7 @@ function App() {
             <Route path="/builder" element={<Builder />} />
             <Route path="/" element={<AuthPage/>} />
             <Route path="/dash" element={<DashboardPage/>} />
-            {/* <Route path="/doc" element={<MyDocuments/>} />
-            */}
+            
           </Routes>
 
       </BrowserRouter>
