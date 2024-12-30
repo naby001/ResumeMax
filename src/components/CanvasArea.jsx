@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Box, TextField, Tooltip, IconButton, MenuItem, Select } from '@mui/material';
 import Draggable from 'react-draggable';
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
@@ -32,10 +32,13 @@ const iconMap = {
   twitter: <TwitterIcon />,
 };
 
-const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, setIcons, ref }) => {
+const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, setIcons }) => {
   const [focusedIndex, setFocusedIndex] = useState(null);
+  const [focusedShapeIndex,setfocusedShapeIndex]=useState(null);
+  const [focusedIconIndex, setfocusedIconIndex]=useState(null);
   const [menuPosition, setMenuPosition] = useState(null);
   const [highestZIndex, setHighestZIndex] = useState(1);
+  const canvasRef = useRef(null);
 
   const zoomStyle = {
     transform: `scale(${zoom / 100})`,
@@ -78,13 +81,28 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
 
     setFocusedIndex(index);
     const { top, left } = event.target.getBoundingClientRect();
-    setMenuPosition({ top: top - 40, left });
+    setMenuPosition({ top: top - 40, });
   };
 
   const handleDeleteTextBox = () => {
     if (focusedIndex !== null) {
       setTextBoxes((prev) => prev.filter((_, index) => index !== focusedIndex));
       setFocusedIndex(null);
+    }
+  };
+
+  const handleDeleteShape = () => {
+    console.log('hello')
+    if (focusedShapeIndex !== null) {
+      setShapes((prev) => prev.filter((_, index) => index !== focusedShapeIndex));
+      setfocusedShapeIndex(null);
+    }
+  };
+
+  const handleDeleteIcon = () => {
+    if (focusedIconIndex !== null) {
+      setIcons((prev) => prev.filter((_, index) => index !== focusedIconIndex));
+      setfocusedIconIndex(null);
     }
   };
 
@@ -137,14 +155,21 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
       if (event.key === 'Delete' && focusedIndex !== null) {
         handleDeleteTextBox();
       }
+      if (event.key === 'Delete' && focusedShapeIndex !== null) {
+        handleDeleteShape();
+      }
+      if (event.key === 'Delete' && focusedIconIndex !== null) {
+        handleDeleteIcon();
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [focusedIndex]);
+  }, [focusedIndex,focusedShapeIndex,focusedIconIndex]);
 
   return (
     <Box
+      id="canvas-area" // Add this ID
       bgcolor="white"
       width="210mm"
       height="297mm"
@@ -152,7 +177,7 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
       position="relative"
       mb={2}
       sx={zoomStyle}
-      ref={ref}
+      ref={canvasRef}
     >
       {/* Render Text Boxes */}
       {textBoxes?.map((textBox, index) => (
@@ -210,6 +235,10 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
           key={index}
           size={{ width: shape.width, height: shape.height }}
           position={{ x: shape.x, y: shape.y }}
+          onDragStart={()=>{
+            setfocusedShapeIndex(index);
+            console.log(focusedShapeIndex)
+          }}
           onDragStop={(e, d) => handleShapeDrag(index, d.x, d.y)}
           onResizeStop={(e, direction, ref, delta, position) => {
             const updatedShapes = [...shapes];
@@ -226,7 +255,8 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
             sx={{
               backgroundColor: 'white',
               width: '100%',
-              height: '100%',
+              height: shape.type==='line'?'1%':'100%',
+
               border: '1px solid black',
               borderRadius: shape.type === 'circle' ? '50%' : '0',
             }}
@@ -240,6 +270,10 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
           key={index}
           size={{ width: icon.width, height: icon.height }}
           position={{ x: icon.x, y: icon.y }}
+          onDragStart={()=>{
+            setfocusedIconIndex(index);
+            
+          }}
           onDragStop={(e, d) => handleIconDrag(index, d.x, d.y)}
           enableResizing={false}
         >
