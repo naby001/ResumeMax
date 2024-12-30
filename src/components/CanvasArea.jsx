@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Box, TextField, Tooltip, IconButton, MenuItem, Select } from '@mui/material';
 import Draggable from 'react-draggable';
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
@@ -32,10 +32,11 @@ const iconMap = {
   twitter: <TwitterIcon />,
 };
 
-const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, setIcons, ref }) => {
+const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, setIcons }) => {
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [menuPosition, setMenuPosition] = useState(null);
   const [highestZIndex, setHighestZIndex] = useState(1);
+  const canvasRef = useRef(null);
 
   const zoomStyle = {
     transform: `scale(${zoom / 100})`,
@@ -145,6 +146,7 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
 
   return (
     <Box
+      id="canvas-area" // Add this ID
       bgcolor="white"
       width="210mm"
       height="297mm"
@@ -152,7 +154,7 @@ const CanvasArea = ({ zoom, textBoxes, setTextBoxes, shapes, setShapes, icons, s
       position="relative"
       mb={2}
       sx={zoomStyle}
-      ref={ref}
+      ref={canvasRef}
     >
       {/* Render Text Boxes */}
       {textBoxes?.map((textBox, index) => (
