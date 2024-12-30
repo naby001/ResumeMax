@@ -1,6 +1,34 @@
-Instructions: 
-1. fork repo
-2. npm install
-3. npm run dev
-4. 5173 localhost
-   Live Link: https://resume-max-hazel.vercel.app/
+# ResumeKraft
+
+
+
+## Overview
+
+ResumeKraft is a full stack webapp that can be used for creating resumes.
+Features:
+1. Start from a blank paper and drop your elements spanning over texts, shapes, icons and photos
+2. Choose one of our templates and fill our the details on the form and get a ready resume in seconds
+3. Saving and editing saved resumes
+4. Exporting resumes in PDF format
+
+## Installation
+Backend:
+cd backend
+npm install
+npm run dev
+
+Frontend:
+cd client
+npm install
+npm run dev
+
+## Technology Stack used:
+React.JS,
+Node.JS,
+MongoDB,
+Express.JS
+## Dependancies:
+react-rnd
+jspdf
+materialui
+react-redux
