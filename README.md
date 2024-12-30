@@ -29,15 +29,7 @@ cd client
 npm install
 npm run dev
 
-
-npm run dev
-
-Frontend:
-cd client
-npm install
-npm run dev
-
-Technology Stack used:
+## Technology Stack used:
 React.JS,
 Node.JS,
 MongoDB,
